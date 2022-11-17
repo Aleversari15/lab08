@@ -31,7 +31,7 @@ public final class SimpleGUIWithFileChooser {
         final JButton button = new JButton ("Save");
         button.addActionListener(new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(final ActionEvent arg0) {
                 try{
                     controller.addStringToFile(text.getText());
                 }
