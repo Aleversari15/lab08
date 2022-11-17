@@ -87,8 +87,8 @@ public final class SimpleGUIWithFileChooser {
         frame.setVisible(true);
     }
     
-    public static void main(String[] args){
-        final SimpleGUI newSGWithFileChooser = new SimpleGUI(new Controller());
+    public static void main(final String[] args){
+        final SimpleGUIWithFileChooser newSGWithFileChooser = new SimpleGUIWithFileChooser(new Controller());
         newSGWithFileChooser.display();
     }
 
