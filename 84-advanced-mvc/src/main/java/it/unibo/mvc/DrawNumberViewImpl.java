@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -118,7 +117,7 @@ public final class DrawNumberViewImpl implements DrawNumberView {
         JOptionPane.showMessageDialog(frame, msg, "Result", JOptionPane.PLAIN_MESSAGE);
     }
 
-    public void displayError(String message){
-        JOptionPane.showMessageDialog(frame,message,"Error",JOptionPane.ERROR_MESSAGE);
+    public void displayError(final String message){
+        JOptionPane.showMessageDialog(frame,null,message,JOptionPane.ERROR_MESSAGE);
     }
 }

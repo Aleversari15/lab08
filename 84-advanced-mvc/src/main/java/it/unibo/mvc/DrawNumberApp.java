@@ -1,15 +1,18 @@
 package it.unibo.mvc;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.StringTokenizer;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  */
 public final class DrawNumberApp implements DrawNumberViewObserver {
-    private static final int MIN = 0;
-    private static final int MAX = 100;
-    private static final int ATTEMPTS = 10;
 
     private final DrawNumber model;
     private final List<DrawNumberView> views;
@@ -27,8 +30,35 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
             view.setObserver(this);
             view.start();
         }
-        this.model = new DrawNumberImpl(MIN, MAX, ATTEMPTS);
+        final InputStream input = Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("config.yml"));
+        final var cBuilder = new Configuration.Builder();
+        try(var buffReader = new BufferedReader(new InputStreamReader(input))){
+            String line;
+            while ((line = buffReader.readLine()) != null){
+                final StringTokenizer st = new StringTokenizer(line);
+                final String next = st.nextToken();
+                if("minimum:".equals(next)){
+                    cBuilder.setMin(Integer.parseInt(st.nextToken()));
+                }
+                if("maximum:".equals(next)){
+                    cBuilder.setMax(Integer.parseInt(st.nextToken()));
+                }
+                if("attempts:".equals(next)){
+                    cBuilder.setAttempts(Integer.parseInt(st.nextToken()));
+                }
+            }
+        } catch (final IOException e){
+            System.out.println(e.getMessage());
+        }
+        final Configuration configuration = cBuilder.build();
+        if(configuration.isConsistent()){
+            this.model = new DrawNumberImpl(configuration);
+        } 
+        else{
+            this.model = new DrawNumberImpl(new Configuration.Builder().build());
+        }
     }
+
 
     @Override
     public void newAttempt(final int n) {
@@ -67,6 +97,8 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
      */
     public static void main(final String... args) throws FileNotFoundException {
         new DrawNumberApp(new DrawNumberViewImpl());
+        new PrintStreamView (System.out);
+        new PrintStreamView("output.log");
     }
 
 }
