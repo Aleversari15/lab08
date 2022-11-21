@@ -12,11 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -50,7 +48,6 @@ public class BadIOGUI {
         final JButton read = new JButton ("Read");
         panel.add(write);
         panel.add(read);
-        //canvas.add(write, BorderLayout.CENTER);
         frame.setContentPane(canvas);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         /*
@@ -80,7 +77,7 @@ public class BadIOGUI {
             public void actionPerformed(ActionEvent arg0) {
                 try{
                     List<String> linesList = Files.readAllLines(new File(PATH).toPath());
-                    for(String line: linesList){
+                    for(final String line: linesList){
                         System.out.println(line);
                     }
                 }

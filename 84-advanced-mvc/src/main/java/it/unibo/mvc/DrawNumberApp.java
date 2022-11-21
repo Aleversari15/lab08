@@ -48,7 +48,7 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
                 }
             }
         } catch (final IOException e){
-            System.out.println(e.getMessage());
+            this.displayError(e.getMessage());
         }
         final Configuration configuration = cBuilder.build();
         if(configuration.isConsistent()){
@@ -59,6 +59,11 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
         }
     }
 
+    private void displayError(final String message) {
+        for (final var view : this.views) {
+            view.displayError(message);
+        }
+    }
 
     @Override
     public void newAttempt(final int n) {
@@ -96,9 +101,8 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
      * @throws FileNotFoundException 
      */
     public static void main(final String... args) throws FileNotFoundException {
-        new DrawNumberApp(new DrawNumberViewImpl());
-        new PrintStreamView (System.out);
-        new PrintStreamView("output.log");
+        new DrawNumberApp(new DrawNumberViewImpl(),new PrintStreamView (System.out),
+        new PrintStreamView("output.log"));
     }
 
 }
